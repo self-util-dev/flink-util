@@ -1,4 +1,4 @@
-package flink.sql.datastream;
+package flink.streaming.examples.sql;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -50,17 +50,42 @@ public class WordCountSQLToStream {
         tEnv.registerDataStream("OrderA", input, "user, product, amount");
 
         // run a SQL query on the Table and retrieve the result as a new Table
-        Table table = tEnv.sqlQuery("SELECT * FROM OrderA WHERE amount > 2 + 3");
-        String explain = tEnv.explain(table);//解析执行计划
-        System.out.println(explain);//打印执行计划
-        System.out.println("------------------------");
-        DataStream<Order> result = tEnv.toAppendStream(table, Order.class);
+        Table table = tEnv.sqlQuery("SELECT user,amount FROM OrderA WHERE amount > 1 + 2");
+        //String explain = tEnv.explain(table);//解析执行计划
+        //System.out.println(explain);//打印执行计划
+        //System.out.println("------------------------");
+        DataStream<Result> result = tEnv.toAppendStream(table, Result.class);
         result.print();
-        String explain1 = tEnv.explain(table);
-        System.out.println(explain1);
-        System.out.println("------------------------");
+        //String explain1 = tEnv.explain(table);
+        //System.out.println(explain1);
+        //System.out.println("------------------------");
         env.execute();
     }
+
+    public static class Result {
+        private int amount;
+        private long user;
+
+        public Result() {
+        }
+
+        public int getAmount() {
+            return amount;
+        }
+
+        public void setAmount(int amount) {
+            this.amount = amount;
+        }
+
+        public long getUser() {
+            return user;
+        }
+
+        public void setUser(long user) {
+            this.user = user;
+        }
+    }
+
 
     public static class Order {
         private long user;
