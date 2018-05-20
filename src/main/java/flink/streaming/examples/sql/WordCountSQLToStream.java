@@ -58,6 +58,7 @@ public class WordCountSQLToStream {
         result.print();
         //String explain1 = tEnv.explain(table);
         //System.out.println(explain1);
+        //System.out.println(env.getExecutionPlan());
         //System.out.println("------------------------");
         env.execute();
     }
@@ -83,6 +84,13 @@ public class WordCountSQLToStream {
 
         public void setUser(long user) {
             this.user = user;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder(20);
+            sb.append("user: ").append(user).append(" amount: ").append(amount);
+            return sb.toString();
         }
     }
 
